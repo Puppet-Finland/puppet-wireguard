@@ -50,6 +50,7 @@ define wireguard::interface (
   Optional[String]      $dns          = undef,
   Boolean               $saveconfig   = true,
   Stdlib::Absolutepath  $config_dir   = '/etc/wireguard',
+  Boolean               $show_diff    = false
 ) {
 
   file {"${config_dir}/${name}.conf":
@@ -57,7 +58,7 @@ define wireguard::interface (
     mode      => '0600',
     owner     => 'root',
     group     => 'root',
-    show_diff => false,
+    show_diff => $show_diff,
     content   => template("${module_name}/interface.conf.erb"),
     notify    => Service["wg-quick@${name}.service"],
   }
